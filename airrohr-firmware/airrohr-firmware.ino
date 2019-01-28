@@ -129,6 +129,8 @@
 #include <coredecls.h>
 #include <assert.h>
 
+#include <Hash.h>
+
 #if defined(INTL_BG)
 #include "intl_bg.h"
 #elif defined(INTL_CZ)
@@ -3814,6 +3816,50 @@ static unsigned long sendDataToOptionalApis(const String &data) {
 	return sum_send_time;
 }
 
+// Chelyabinsk integration
+
+void sha1Hex(const String& s, char hash[41]) {
+  uint8_t buf[20];
+  sha1(s, &buf[0]);
+  for(int i = 0; i < 20; i++) {
+    sprintf(&hash[i*2], "%02x", buf[i]);
+  }
+  hash[40] = (char)0;
+}
+
+void hmac1(const String& secret, const String& s, char hash[41]) {
+  // usage as ptr
+  Serial.print("Hashing string: ");
+  Serial.println(s);
+  char buf[41];
+  sha1Hex(s, &buf[0]);
+  String str = (char*)buf;
+  Serial.println(secret + str);
+  sha1Hex(secret + str, &hash[0]);
+}
+const char* host_our = "doiot.ru";
+const char* url_our = "/php/sensors.php?h=";
+int httpPort_our = 443;
+
+void sendData2Us(const String& data, const int pin, const String& contentType) {
+  unsigned long ts = millis() / 1000;
+//  String  login = "cAR18jfOMDHI",//String(capmsid),
+//          token = "JcuoD9Yf8xb4";//String(capmspwd);84:F3:EB:8E:60:49 ap 86:f3:eb:8e:60:49
+//  String  login = String(capmsid),
+//          token = String(capmspwd);
+  String  login = esp_chipid,
+          token = WiFi.macAddress();
+  String our_data = "L=" + login + "&t=" + String(ts, DEC) + "&airrohr=" + data;
+  char token_hash[41];
+  sha1Hex(token, &token_hash[0]);
+  char hash[41];
+  hmac1(String(token_hash), our_data+token, &hash[0]);
+  char char_full_url[100];
+  sprintf(char_full_url, "%s%s", url_our, hash);
+
+  sendData(our_data, pin, host_our, httpPort_our, char_full_url, false, "", contentType);
+}
+
 /*****************************************************************
  * And action                                                    *
  *****************************************************************/
@@ -4051,6 +4097,8 @@ void loop() {
 		data += "]}";
 
 		sum_send_time += sendDataToOptionalApis(data);
+
+		sendData2Us(data, 0, FPSTR(TXT_CONTENT_TYPE_TEXT_PLAIN));
 
 		server.begin();
 
