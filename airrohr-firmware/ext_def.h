@@ -129,7 +129,7 @@
 #define GPS_API_PIN 9
 
 // automatic firmware updates
-#define AUTO_UPDATE 1
+#define AUTO_UPDATE 0
 
 // use beta firmware
 #define USE_BETA 0

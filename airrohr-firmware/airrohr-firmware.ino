@@ -2382,6 +2382,7 @@ static String sensorDHT() {
 			last_value_DHT_H = h;
 			s += Value2Json(F("temperature"), Float2String(last_value_DHT_T));
 			s += Value2Json(F("humidity"), Float2String(last_value_DHT_H));
+			s += Value2Json(F("DS18B20_temperature"), Float2String(last_value_DHT_T));
 		}
 	}
 	debug_out("----", DEBUG_MIN_INFO, 1);
@@ -2414,6 +2415,7 @@ static String sensorHTU21D() {
 		last_value_HTU21D_H = h;
 		s += Value2Json(F("HTU21D_temperature"), Float2String(last_value_HTU21D_T));
 		s += Value2Json(F("HTU21D_humidity"), Float2String(last_value_HTU21D_H));
+		s += Value2Json(F("DS18B20_temperature"), Float2String(last_value_HTU21D_T));
 	}
 	debug_out("----", DEBUG_MIN_INFO, 1);
 
@@ -2445,6 +2447,7 @@ static String sensorBMP() {
 		last_value_BMP_P = p;
 		s += Value2Json(F("BMP_pressure"), Float2String(last_value_BMP_P));
 		s += Value2Json(F("BMP_temperature"), Float2String(last_value_BMP_T));
+		s += Value2Json(F("DS18B20_temperature"), Float2String(last_value_BMP_T));
 	}
 	debug_out("----", DEBUG_MIN_INFO, 1);
 
@@ -2476,6 +2479,7 @@ static String sensorBMP280() {
 		last_value_BMP280_P = p;
 		s += Value2Json(F("BMP280_pressure"), Float2String(last_value_BMP280_P));
 		s += Value2Json(F("BMP280_temperature"), Float2String(last_value_BMP280_T));
+		s += Value2Json(F("DS18B20_temperature"), Float2String(last_value_BMP280_T));
 	}
 	debug_out("----", DEBUG_MIN_INFO, 1);
 
@@ -2514,6 +2518,7 @@ static String sensorBME280() {
 		s += Value2Json(F("BME280_temperature"), Float2String(last_value_BME280_T));
 		s += Value2Json(F("BME280_humidity"), Float2String(last_value_BME280_H));
 		s += Value2Json(F("BME280_pressure"), Float2String(last_value_BME280_P));
+		s += Value2Json(F("DS18B20_temperature"), Float2String(last_value_BME280_T));
 	}
 	debug_out("----", DEBUG_MIN_INFO, 1);
 

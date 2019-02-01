@@ -15,6 +15,6 @@ def after_build(source, target, env):
   if not os.path.exists("./builds"):
     os.mkdir("./builds")
   target_name = b64decode(ARGUMENTS.get("LANG"))
-  shutil.copy(target[0].path, "./builds/latest_"+target_name.lower()+".bin")
+  shutil.copy(target[0].path, "./builds/airrohr_aircms_firmware_v2_"+target_name.lower()+".bin")
 
 env.AddPostAction("$BUILD_DIR/firmware.bin", after_build)
