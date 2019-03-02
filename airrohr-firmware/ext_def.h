@@ -80,7 +80,7 @@
 #endif
 
 // DHT22, temperature, humidity
-#define DHT_READ 1
+#define DHT_READ 0
 #define DHT_TYPE DHT22
 #define DHT_API_PIN 7
 
@@ -117,7 +117,7 @@
 #define BMP280_API_PIN 3
 
 // BME280, temperature, humidity, pressure
-#define BME280_READ 0
+#define BME280_READ 1
 #define BME280_API_PIN 11
 
 // DS18B20, temperature
@@ -130,7 +130,7 @@
 #define GPS_API_PIN 9
 
 // automatic firmware updates
-#define AUTO_UPDATE 1
+#define AUTO_UPDATE 0
 
 // use beta firmware
 #define USE_BETA 0
