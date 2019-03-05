@@ -100,7 +100,7 @@
  *
  ************************************************************************/
 // increment on change
-#define SOFTWARE_VERSION "NRZ-2018-123B"
+#define SOFTWARE_VERSION "MSC-2019-03-05-v8"
 
 /*****************************************************************
  * Includes                                                      *
@@ -898,7 +898,7 @@ void readConfig() {
 					setFromJSON(ssl_madavi);
 					setFromJSON(send2sensemap);
 					setFromJSON(send2fsapp);
-          setFromJSON(send2aircms);
+          			setFromJSON(send2aircms);
 					setFromJSON(send2lora);
 					setFromJSON(send2csv);
 					setFromJSON(auto_update);
@@ -1445,8 +1445,8 @@ void webserver_config() {
 			page_content += FPSTR(BR_TAG);
 			page_content += form_checkbox("send2fsapp", tmpl(FPSTR(INTL_SEND_TO), F("Feinstaub-App")), send2fsapp);
 			page_content += FPSTR(BR_TAG);
-      page_content += form_checkbox("send2aircms", tmpl(FPSTR(INTL_SEND_TO), F("aircms.online")), send2aircms);
-      page_content += FPSTR(BR_TAG);
+      		page_content += form_checkbox("send2aircms", tmpl(FPSTR(INTL_SEND_TO), F("aircms.online")), send2aircms);
+      		page_content += FPSTR(BR_TAG);
 			page_content += form_checkbox("send2sensemap", tmpl(FPSTR(INTL_SEND_TO), F("OpenSenseMap")), send2sensemap);
 			page_content += FPSTR(TABLE_TAG_OPEN);
 			page_content += form_input("senseboxid", "senseBox-ID: ", senseboxid, capacity_null_terminated_char_array(senseboxid));
@@ -1611,7 +1611,7 @@ void webserver_config() {
 		page_content += line_from_value(FPSTR(INTL_MEASUREMENT_INTERVAL), String(sending_intervall_ms));
 		page_content += line_from_value(tmpl(FPSTR(INTL_SEND_TO), F("CSV")), String(send2csv));
 		page_content += line_from_value(tmpl(FPSTR(INTL_SEND_TO), F("Feinstaub-App")), String(send2fsapp));
-    page_content += line_from_value(tmpl(FPSTR(INTL_SEND_TO), F("aircms.online")), String(send2aircms));
+    	page_content += line_from_value(tmpl(FPSTR(INTL_SEND_TO), F("aircms.online")), String(send2aircms));
 		page_content += line_from_value(tmpl(FPSTR(INTL_SEND_TO), F("opensensemap")), String(send2sensemap));
 		page_content += F("<br/>senseBox-ID ");
 		page_content += senseboxid;
@@ -3833,12 +3833,22 @@ static unsigned long sendDataToOptionalApis(const String &data) {
             token = WiFi.macAddress();
 
     // Temporal workaround for a server limitation as server can only take DS18B20 temperature data.
-    String altered_data = data;
-    altered_data.replace("temperature","DS18B20_temperature");
-    altered_data.replace("HTU21D_temperature","DS18B20_temperature");
-    altered_data.replace("BMP_temperature","DS18B20_temperature");
-    altered_data.replace("BMP280_temperatur","DS18B20_temperature");
-    altered_data.replace("BME280_temperature","DS18B20_temperature");
+    String altered_data = "" + data;
+    if (cfg::dht_read) { 
+		altered_data.replace("temperature","DS18B20_temperature"); 
+	}
+    if (cfg::htu21d_read) { 
+		altered_data.replace("HTU21D_temperature","DS18B20_temperature"); 
+	}
+    if (cfg::bmp_read) { 
+		altered_data.replace("BMP_temperature","DS18B20_temperature"); 
+	}
+    if (cfg::bmp280_read) { 
+		altered_data.replace("BMP280_temperature","DS18B20_temperature"); 
+	}
+    if (cfg::bme280_read)  { 
+		altered_data.replace("BME280_temperature","DS18B20_temperature"); 
+	}
         
     String aircms_data = "L=" + login + "&t=" + String(ts, DEC) + "&airrohr=" + altered_data;
     char token_hash[41];
