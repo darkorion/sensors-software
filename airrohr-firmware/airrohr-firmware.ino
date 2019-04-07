@@ -943,7 +943,7 @@ void readConfig() {
 					setFromJSON(ssl_madavi);
 					setFromJSON(send2sensemap);
 					setFromJSON(send2fsapp);
-          setFromJSON(send2aircms);
+          			setFromJSON(send2aircms);
 					setFromJSON(send2lora);
 					setFromJSON(send2csv);
 					setFromJSON(auto_update);
@@ -1502,8 +1502,8 @@ void webserver_config() {
 			page_content += FPSTR(BR_TAG);
 			page_content += form_checkbox("send2fsapp", tmpl(FPSTR(INTL_SEND_TO), FPSTR(WEB_FEINSTAUB_APP)), send2fsapp);
 			page_content += FPSTR(BR_TAG);
-      page_content += form_checkbox("send2aircms", tmpl(FPSTR(INTL_SEND_TO), F("aircms.online")), send2aircms);
-      page_content += FPSTR(BR_TAG);
+      		page_content += form_checkbox("send2aircms", tmpl(FPSTR(INTL_SEND_TO), F("aircms.online")), send2aircms);
+      		page_content += FPSTR(BR_TAG);
 			page_content += form_checkbox("send2sensemap", tmpl(FPSTR(INTL_SEND_TO), F("OpenSenseMap")), send2sensemap);
 			page_content += FPSTR(TABLE_TAG_OPEN);
 			page_content += form_input("senseboxid", "senseBox-ID: ", senseboxid, capacity_null_terminated_char_array(senseboxid));
@@ -1676,7 +1676,7 @@ void webserver_config() {
 		page_content += line_from_value(FPSTR(INTL_DEBUG_LEVEL), String(debug));
 		page_content += line_from_value(FPSTR(INTL_MEASUREMENT_INTERVAL), String(sending_intervall_ms));
 		page_content += line_from_value(tmpl(FPSTR(INTL_SEND_TO), F("Feinstaub-App")), String(send2fsapp));
-    page_content += line_from_value(tmpl(FPSTR(INTL_SEND_TO), F("aircms.online")), String(send2aircms));
+    	page_content += line_from_value(tmpl(FPSTR(INTL_SEND_TO), F("aircms.online")), String(send2aircms));
 		page_content += line_from_value(tmpl(FPSTR(INTL_SEND_TO), FPSTR(WEB_CSV)), String(send2csv));
 		page_content += line_from_value(tmpl(FPSTR(INTL_SEND_TO), FPSTR(WEB_FEINSTAUB_APP)), String(send2fsapp));
 		page_content += line_from_value(tmpl(FPSTR(INTL_SEND_TO), F("opensensemap")), String(send2sensemap));
@@ -3917,7 +3917,7 @@ static unsigned long sendDataToOptionalApis(const String &data) {
     char char_full_url[100];
     sprintf(char_full_url, "%s%s", URL_AIRCMS, hash);
     
-    sendData(aircms_data, 0, HOST_AIRCMS, PORT_AIRCMS, char_full_url, false, "", FPSTR(TXT_CONTENT_TYPE_TEXT_PLAIN));
+    sendData(aircms_data, 0, HOST_AIRCMS, PORT_AIRCMS, char_full_url, false, false, "", FPSTR(TXT_CONTENT_TYPE_TEXT_PLAIN));
     sum_send_time += millis() - start_send;
   }
 
